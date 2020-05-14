@@ -157,7 +157,7 @@ class SignStylizer(QgsProcessingAlgorithm):
                         self.SIGN_CODE_FIELD,
                         context)
                         
-        path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Varoitusmerkkien testi (Liikenne)/svg/"
+        path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Vanhat liikennemerkit (Github-liikennetesti)/svg/"
         resource_path = path.replace("\\", "/")
         
         path_exp = "concat(\'{0}\', \"{1}\", \'.svg\')".format(resource_path, value_field)
