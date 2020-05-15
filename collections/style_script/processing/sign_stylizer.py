@@ -21,23 +21,13 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterField,
                        QgsApplication,
                        QgsSymbolLayer,
-                       QgsProperty)
+                       QgsProperty,
+                       QgsSvgMarkerSymbolLayer)
 import processing
 
 
 class SignStylizer(QgsProcessingAlgorithm):
-    """
-    This is an example algorithm that takes a vector layer and
-    creates a new identical one.
 
-    It is meant to be used as an example of how to create your own
-    algorithms and explain methods and variables used to do it. An
-    algorithm like this will be available in all elements, and there
-    is not need for additional work.
-
-    All Processing algorithms should extend the QgsProcessingAlgorithm
-    class.
-    """
 
     # Constants used to refer to parameters and outputs. They will be
     # used when calling the algorithm from another algorithm, or when
@@ -143,7 +133,8 @@ class SignStylizer(QgsProcessingAlgorithm):
         # Retrieve the feature source and sink. The 'dest_id' variable is used
         # to uniquely identify the feature sink, and must be included in the
         # dictionary returned by the processAlgorithm function.
-
+        
+        #vector layer given by the user
         input_layer = self.parameterAsVectorLayer(
             parameters,
             self.INPUT,
@@ -152,95 +143,40 @@ class SignStylizer(QgsProcessingAlgorithm):
         
         #input_layer = parameters[self.INPUT]
         
+        #the field within previous layer. Should contain numeral codes
+        #that identify each traffic sign
         value_field = self.parameterAsString(
                         parameters,
                         self.SIGN_CODE_FIELD,
                         context)
                         
+        #if the SVG's are installed via Resource sharing, they should be here
         path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Vanhat liikennemerkit (Github-liikennetesti)/svg/"
+        #Windows path hijinks
         resource_path = path.replace("\\", "/")
         
+        # creating a dummy symbol layer, which will be styled later
+        svg_layer = QgsSvgMarkerSymbolLayer("circle")
+        
+        # creating two expressions, one for defining the path to each SVG image
+        # the other for scaling image size based on current map scale
+        # the syntax of these strings is the one used in QGIS's Expression bulder
         path_exp = "concat(\'{0}\', \"{1}\", \'.svg\')".format(resource_path, value_field)
         size_exp = ("CASE WHEN @map_scale < 10000 THEN 12 WHEN @map_scale < 50000 THEN 9" + 
                     " WHEN @map_scale < 125000 THEN 7 WHEN @map_scale < 500000 THEN 4 ELSE 3 END")
         
+        # taking a version of the renderer, which houses the symbol layers
         rend = input_layer.renderer().clone()
+        rend.symbol().changeSymbolLayer(0, svg_layer)
+        
+        # defining the image path expression
         rend.symbol().symbolLayer(0).setDataDefinedProperty(QgsSymbolLayer.PropertyName, 
         QgsProperty.fromExpression(path_exp))
         rend.symbol().symbolLayer(0).setDataDefinedProperty(
         QgsSymbolLayer.PropertySize, QgsProperty.fromExpression(size_exp) )
         
+        # setting the new renderer to layer
         input_layer.setRenderer(rend)
+        # updating so that the results are shown to the user
         input_layer.triggerRepaint()
-        #feedback.pushInfo('CRS is {}'.format(source.sourceCrs().authid()))
-        
-        #feedback.pushInfo('Value field chosen is {}'.format(value_field))
 
-        # If source was not found, throw an exception to indicate that the algorithm
-        # encountered a fatal error. The exception text can be any string, but in this
-        # case we use the pre-built invalidSourceError method to return a standard
-        # helper text for when a source cannot be evaluated
-        #if source is None:
-            #raise QgsProcessingException(self.invalidSourceError(parameters, self.INPUT))
-        """
-        (sink, dest_id) = self.parameterAsSink(
-            parameters,
-            #self.OUTPUT,
-            context,
-            source.fields(),
-            source.wkbType(),
-            source.sourceCrs()
-        )
-
-        # Send some information to the user
-        feedback.pushInfo('CRS is {}'.format(source.sourceCrs().authid()))
-
-        # If sink was not created, throw an exception to indicate that the algorithm
-        # encountered a fatal error. The exception text can be any string, but in this
-        # case we use the pre-built invalidSinkError method to return a standard
-        # helper text for when a sink cannot be evaluated
-        if sink is None:
-            raise QgsProcessingException(self.invalidSinkError(parameters, self.OUTPUT))
-
-        # Compute the number of steps to display within the progress bar and
-        # get features from source
-        total = 100.0 / source.featureCount() if source.featureCount() else 0
-        features = source.getFeatures()
-
-        for current, feature in enumerate(features):
-            # Stop the algorithm if cancel button has been clicked
-            if feedback.isCanceled():
-                break
-
-            # Add a feature in the sink
-            sink.addFeature(feature, QgsFeatureSink.FastInsert)
-
-            # Update the progress bar
-            feedback.setProgress(int(current * total))
-
-        # To run another Processing algorithm as part of this algorithm, you can use
-        # processing.run(...). Make sure you pass the current context and feedback
-        # to processing.run to ensure that all temporary layer outputs are available
-        # to the executed algorithm, and that the executed algorithm can send feedback
-        # reports to the user (and correctly handle cancelation and progress reports!)
-        
-        if False:
-            buffered_layer = processing.run("native:buffer", {
-                'INPUT': dest_id,
-                'DISTANCE': 1.5,
-                'SEGMENTS': 5,
-                'END_CAP_STYLE': 0,
-                'JOIN_STYLE': 0,
-                'MITER_LIMIT': 2,
-                'DISSOLVE': False,
-                'OUTPUT': 'memory:'
-            }, context=context, feedback=feedback)['OUTPUT']
-        """
-
-        # Return the results of the algorithm. In this case our only result is
-        # the feature sink which contains the processed features, but some
-        # algorithms may return multiple feature sinks, calculated numeric
-        # statistics, etc. These should all be included in the returned
-        # dictionary, with keys matching the feature corresponding parameter
-        # or output names.
-        #return {self.OUTPUT: dest_id}
