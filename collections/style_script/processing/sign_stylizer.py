@@ -19,6 +19,7 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterFeatureSource,
                        QgsProcessingParameterFeatureSink,
                        QgsProcessingParameterField,
+                       QgsProcessingParameterVectorLayer,
                        QgsApplication,
                        QgsSymbolLayer,
                        QgsProperty,
@@ -99,9 +100,9 @@ class SignStylizer(QgsProcessingAlgorithm):
         # We add the input vector features source. It can have any kind of
         # geometry.
         self.addParameter(
-            QgsProcessingParameterFeatureSource(
+            QgsProcessingParameterVectorLayer(
                 self.INPUT,
-                self.tr('Input layer'),
+                self.tr('Valitse liikennemerkkitaso'),
                 [QgsProcessing.TypeVectorPoint]
             )
         )
@@ -179,4 +180,6 @@ class SignStylizer(QgsProcessingAlgorithm):
         input_layer.setRenderer(rend)
         # updating so that the results are shown to the user
         input_layer.triggerRepaint()
+        
+        return {"Styling":"complete"}
 
