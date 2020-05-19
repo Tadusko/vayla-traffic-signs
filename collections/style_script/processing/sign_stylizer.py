@@ -37,6 +37,7 @@ class SignStylizer(QgsProcessingAlgorithm):
     INPUT = 'INPUT'
     OUTPUT = 'OUTPUT'
     SIGN_CODE_FIELD = 'sign_code_field'
+    SPEED_LIMIT_FIELD = 'speed_limit_field'
 
     def tr(self, string):
         """
@@ -113,6 +114,15 @@ class SignStylizer(QgsProcessingAlgorithm):
                 'Valitse sarake, jossa merkkikoodit ovat. Digiroadissa tämä on TYYPPI.',
                 '',
                 self.INPUT))
+        
+        speed_parameter = QgsProcessingParameterField(
+                self.SPEED_LIMIT_FIELD,
+                'Valitse sarake, jossa liikenteen nopeusrajoitusarvot ovat. Digiroadissa tämä on ARVO.',
+                '',
+                self.INPUT)
+        speed_parameter.setFlags(QgsProcessingParameterField.FlagOptional)
+        
+        self.addParameter(speed_parameter)
 
         # We add a feature sink in which to store our processed features (this
         # usually takes the form of a newly created vector layer when the
@@ -130,11 +140,6 @@ class SignStylizer(QgsProcessingAlgorithm):
         """
         Here is where the processing itself takes place.
         """
-
-        # Retrieve the feature source and sink. The 'dest_id' variable is used
-        # to uniquely identify the feature sink, and must be included in the
-        # dictionary returned by the processAlgorithm function.
-        
         #vector layer given by the user
         input_layer = self.parameterAsVectorLayer(
             parameters,
@@ -142,17 +147,20 @@ class SignStylizer(QgsProcessingAlgorithm):
             context
         )
         
-        #input_layer = parameters[self.INPUT]
-        
         #the field within previous layer. Should contain numeral codes
         #that identify each traffic sign
         value_field = self.parameterAsString(
                         parameters,
                         self.SIGN_CODE_FIELD,
                         context)
-                        
+        
+        speed_field = self.parameterAsString(
+                        parameters,
+                        self.SPEED_LIMIT_FIELD,
+                        context)
+        
         #if the SVG's are installed via Resource sharing, they should be here
-        path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Vanhat liikennemerkit (Github-liikennetesti)/svg/"
+        path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Vanhat liikennemerkit (Liikennemerkit)/svg/"
         #Windows path hijinks
         resource_path = path.replace("\\", "/")
         
@@ -162,9 +170,21 @@ class SignStylizer(QgsProcessingAlgorithm):
         # creating two expressions, one for defining the path to each SVG image
         # the other for scaling image size based on current map scale
         # the syntax of these strings is the one used in QGIS's Expression bulder
-        path_exp = "concat(\'{0}\', \"{1}\", \'.svg\')".format(resource_path, value_field)
+        if speed_field:
+            path_exp = ("CASE WHEN \"{1}\"=361 AND \"{2}\"=50 THEN concat(\'{0}\', \"{1}\", \'-1.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=20 THEN concat(\'{0}\', \"{1}\", \'-2.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=70 THEN concat(\'{0}\', \"{1}\", \'-3.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=80 THEN concat(\'{0}\', \"{1}\", \'-4.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=100 THEN concat(\'{0}\', \"{1}\", \'-5.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=120 THEN concat(\'{0}\', \"{1}\", \'-6.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=30 THEN concat(\'{0}\', \"{1}\", \'-7.svg\')"+
+        " WHEN \"{1}\"=361 AND \"{2}\"=40 THEN concat(\'{0}\', \"{1}\", \'-8.svg\')"+
+        " ELSE concat(\'{0}\', \"{1}\", \'.svg\') END").format(resource_path, value_field, speed_field)
+        else:
+            path_exp = "concat(\'{0}\', \"{1}\", \'.svg\')".format(resource_path, value_field)
         size_exp = ("CASE WHEN @map_scale < 10000 THEN 12 WHEN @map_scale < 50000 THEN 9" + 
-                    " WHEN @map_scale < 125000 THEN 7 WHEN @map_scale < 500000 THEN 4 ELSE 3 END")
+                    " WHEN @map_scale < 100000 THEN 8 WHEN @map_scale < 150000 THEN 6 WHEN @map_scale < 500000"+ 
+                    " THEN 4 ELSE 3 END")
         
         # taking a version of the renderer, which houses the symbol layers
         rend = input_layer.renderer().clone()
