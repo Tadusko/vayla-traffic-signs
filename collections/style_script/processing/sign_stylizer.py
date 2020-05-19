@@ -160,7 +160,7 @@ class SignStylizer(QgsProcessingAlgorithm):
                         context)
         
         #if the SVG's are installed via Resource sharing, they should be here
-        path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Vanhat liikennemerkit (Liikennemerkit)/svg/"
+        path = QgsApplication.qgisSettingsDirPath() + "resource_sharing/collections/Väylävirasto vanhat liikennemerkit (Liikennemerkit)/svg/"
         #Windows path hijinks
         resource_path = path.replace("\\", "/")
         
