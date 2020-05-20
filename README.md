@@ -21,4 +21,4 @@ Jos pisteissä on Digiroadin tapaan attribuuttitietona, mitä merkkiä ne esitt�
 3. *Vapaavalintainen*. Jotta nopeusrajoitusmerkeissä näkyisivät oikeat luvut, valitse sarake, jossa tämä tieto on. DR:ssa sarake *ARVO*.
 
 Jos kaikki menee kuten pitää, pisteet korvautuvat välittömästi oikealla merkillä karttaikkunassa.
-**HUOM. Skripti toimii toistaiseksi vain vanhojen merkkien kanssa**
+**HUOM. Skripti toimii toistaiseksi vain vanhoilla merkeillä.**
