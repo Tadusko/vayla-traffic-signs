@@ -1,6 +1,6 @@
 ![Väyläviraston logo](https://vayla.fi/documents/20473/740592/vayla_sivussa_fi_sv_rgb.png)
 # Suomen liikennemerkit QGIS-kuvakirjastona
-Tässä repositoriossa on SVG-vektorikuvina Suomen maanteillä käytössä olevat liikennemerkit. Kokoelmissa ovat nykyiset ja uuden tieliikennelain myötä 1.6.2020 voimaantulevat merkit näiden visualisoinnissa QGIS:ssä auttava prosessointiskripti. Liikennemerkit on nimetty ne yksilöivällä koodilla: tarkempaa tietoa kustakin merkistä saa [Väyläviraston verkkosivuilta](https://vayla.fi/tieverkko/liikennemerkit)
+Tässä repositoriossa on SVG-vektorikuvina Suomen maanteillä käytössä olevat liikennemerkit. Kokoelmissa ovat nykyiset ja uuden tieliikennelain myötä 1.6.2020 voimaantulevat merkit sekä näiden visualisoinnissa QGIS:ssä auttava prosessointiskripti. Liikennemerkit on nimetty ne yksilöivällä koodilla: tarkempaa tietoa kustakin merkistä saa [Väyläviraston verkkosivuilta](https://vayla.fi/tieverkko/liikennemerkit)
 
 ### Käyttöönotto QGIS 3 -ohjelmassa
 Kirjasto on tarkoitettu käyttöön QGIS-paikkatieto-ohjelmassa, jossa sillä voi visualisoida esimerkiksi [Digiroadin](https://vayla.fi/avoindata/digiroad) tai tierekisterin (saatavilla [Väyläviraston latauspalvelun](https://julkinen.vayla.fi/oskari/) kautta) tarjoamia liikennemerkkien sijaintipisteitä. Merkit ladataan QGIS:iin [Resource sharing](http://qgis-contribution.github.io/QGIS-ResourceSharing/) -nimisen laajennoksen (plugin) kautta.
@@ -20,5 +20,5 @@ Jos pisteissä on Digiroadin tapaan attribuuttitietona, mitä merkkiä ne esitt�
 2. Sarake, jossa kolminumeroiset merkkikoodit ovat. Digiroadissa tämä on *TYYPPI* ja tierekisterissä *ASETUSNR*.
 3. *Vapaavalintainen*. Jotta nopeusrajoitusmerkeissä näkyisivät oikeat luvut, valitse sarake, jossa tämä tieto on. DR:ssa sarake *ARVO* ja tierekisterissä *LMTEKSTI*.
 
-Jos kaikki menee kuten pitää, pisteet korvautuvat välittömästi oikealla merkillä karttaikkunassa.
+Jos kaikki menee kuten pitää, pisteet korvautuvat välittömästi oikealla merkeillä karttaikkunassa.
 **HUOM. Skripti toimii toistaiseksi vain vanhoilla merkeillä.**
