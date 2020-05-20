@@ -111,13 +111,15 @@ class SignStylizer(QgsProcessingAlgorithm):
         self.addParameter(
         QgsProcessingParameterField(
                 self.SIGN_CODE_FIELD,
-                'Valitse sarake, jossa merkkikoodit ovat. Digiroadissa tämä on TYYPPI.',
+                'Valitse sarake, jossa merkkikoodit ovat. Digiroadissa tämä on TYYPPI \nja '+
+                'tierekisterissä ASETUSNR.',
                 '',
                 self.INPUT))
         
         speed_parameter = QgsProcessingParameterField(
                 self.SPEED_LIMIT_FIELD,
-                'Valitse sarake, jossa liikenteen nopeusrajoitusarvot ovat. Digiroadissa tämä on ARVO.',
+                'Valitse sarake, jossa liikenteen nopeusrajoitusarvot ovat. Digiroadissa tämä on ARVO \nja '+
+                'tierekisterissä LMTEKSTI.',
                 '',
                 self.INPUT)
         speed_parameter.setFlags(QgsProcessingParameterField.FlagOptional)
