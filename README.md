@@ -2,7 +2,7 @@
 # Suomen liikennemerkit QGIS-kuvakirjastona
 Tässä repositoriossa on SVG-vektorikuvina Suomen maanteillä käytössä olevat liikennemerkit. Kokoelmissa ovat nykyiset ja uuden tieliikennelain myötä 1.6.2020 voimaantulevat merkit näiden visualisoinnissa QGIS:ssä auttava prosessointiskripti. Liikennemerkit on nimetty ne yksilöivällä koodilla: tarkempaa tietoa kustakin merkistä saa [Väyläviraston verkkosivuilta](https://vayla.fi/tieverkko/liikennemerkit)
 
-### Käyttöönotto QGIS 3-ohjelmassa
+### Käyttöönotto QGIS 3 -ohjelmassa
 Kirjasto on tarkoitettu käyttöön QGIS-paikkatieto-ohjelmassa, jossa sillä voi visualisoida esimerkiksi [Digiroadin](https://vayla.fi/avoindata/digiroad) tarjoamia liikennemerkkien sijaintipisteitä. Merkit ladataan QGIS:iin Resource sharing -nimisen laajennoksen (plugin) kautta.
 
 1. Asenna Resource sharing QGIS:n laajennosjakelusta (*Plugins* > *Manage and install plugins*).
