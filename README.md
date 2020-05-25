@@ -22,3 +22,6 @@ Jos pisteissä on Digiroadin tapaan attribuuttitietona, mitä merkkiä ne esitt�
 
 Jos kaikki menee kuten pitää, pisteet korvautuvat välittömästi oikealla merkeillä karttaikkunassa.
 **HUOM. Skripti toimii toistaiseksi vain vanhoilla merkeillä.**
+
+### Käyttöehdot
+Liikennemerkkikuvien lisenssi on CC 4.0 BY. Lue lisää lisenssistä [Creative Commonsin verkkosivuilla](http://creativecommons.org/licenses/by/4.0/) ja Väyläviraston [avoimen datan käyttöehdoista](https://vayla.fi/avoindata/kayttoehdot).
